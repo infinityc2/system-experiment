@@ -3,7 +3,7 @@
     <v-card-title>แจ้งซ่อมคอมพิวเตอร์</v-card-title>
     <v-card-title class="subtitle-1" style="display: none">วันที่แจ้งซ่อม {{ currentDate }}</v-card-title>
     <v-card-text>
-      <v-containner fluid>
+      <v-layout column>
         <v-flex>
           <v-select label="อุปกรณ์ที่ส่งซ่อม"></v-select>
         </v-flex>
@@ -45,16 +45,21 @@
         </v-flex>
 
         <v-flex>
-          <v-text-field label="อีเมล์" :rules="[]"></v-text-field>
+          <v-text-field label="อีเมล์" :rules="[rules.email]"></v-text-field>
         </v-flex>
 
         <v-flex>
           <v-text-field label="เบอร์โทรศัพท์" :rules="[rules.number]"></v-text-field>
         </v-flex>
-      </v-containner>
+
+        <v-flex>
+          <v-textarea label="รายละเอียด"></v-textarea>
+        </v-flex>
+      </v-layout>
     </v-card-text>
     <v-card-actions>
       <v-btn color="primary">แจ้งซ่อม</v-btn>
+      <v-btn text>กลับ</v-btn>
     </v-card-actions>
   </v-card>
 </template>

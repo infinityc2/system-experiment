@@ -1,16 +1,11 @@
 <template>
   <div id="app">
-    <Dashboard />
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Dashboard from './components/Dashboard'
-
 export default {
-  components: {
-    Dashboard
-  },
   name: 'app'
 }
 </script>
