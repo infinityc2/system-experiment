@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,6 +53,7 @@ public class RepairInvoice {
     private String describe;
 
     @ManyToMany
+    @JsonBackReference
     @Column(name = "tool_id",nullable = true)
     @JoinTable(
         name = "tool_invoice",
