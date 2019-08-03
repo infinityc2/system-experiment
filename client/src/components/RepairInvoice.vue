@@ -83,7 +83,8 @@ export default {
         tools: [],
         email: null,
         phone: null,
-        describe: null
+        describe: null,
+        customer: this.$route.params.username
       },
 
       date: new Date().toISOString().substr(0, 10),

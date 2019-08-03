@@ -3,16 +3,21 @@ import Router from 'vue-router'
 
 import RepairInvoice from './components/RepairInvoice'
 import Dashboard from './components/Dashboard'
+import Login from './components/Login'
 
 Vue.use(Router)
 
 const routes = [
     {
         path: '*',
-        redirect: '/dashboard'
+        redirect: '/login'
     },
     {
-        path: '/dashboard',
+        path: '/login',
+        component: Login
+    },
+    {
+        path: '/dashboard/:username',
         component: Dashboard,
         children: [
             {

@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
@@ -53,26 +54,35 @@ public class RepairInvoiceController {
     }
 
     @PostMapping("/invoice/{items}")
-    public RepairInvoice addRepairInvoice(@PathVariable List<Long> items, @RequestBody Map<String, String> body) {
+    public RepairInvoice addRepairInvoice(@PathVariable(required = false) List<Long> items, @RequestBody Map<String, String> body) {
         RepairInvoice newInvoice = new RepairInvoice();
         Optional<Brand> brand = brandRepository.findById(Long.valueOf(body.get("brand").toString()));
         Optional<ComputerType> computerType = computerTypeRepository.findById(Long.valueOf(body.get("computerType").toString()));
-        // Optional<Customer> customer = customerRepository.findById(Long.valueOf(body.get("customer").toString()));
+        Customer userCustomer = customerRepository.findByUsername(body.get("customer").toString());
+        Optional<Customer> customer = customerRepository.findById(userCustomer.getCustomerId());
 
         newInvoice.setEmail(body.get("email").toString());
         newInvoice.setBrand(brand.get());
         newInvoice.setComputerType(computerType.get());
         newInvoice.setDescribe(body.get("describe").toString());
-        // newInvoice.setCustomer(customer.get());
+        newInvoice.setCustomer(customer.get());
         newInvoice.setPhoneNumber(body.get("phoneNumber").toString());
         newInvoice.setCurDate(new Date());
         
-        Set<Tool> tools = new HashSet<Tool>();
-        for(Long i: items) {
-            Tool tool = toolRepository.findById(i).get();
-            tools.add(tool);
+        try {
+
+            Set<Tool> tools = new HashSet<Tool>();
+            for(Long i: items) {
+                Tool tool = toolRepository.findById(i).get();
+                tools.add(tool);
+            }
+            newInvoice.setTool(tools);
+
+        } catch (NoSuchElementException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-        newInvoice.setTool(tools);
 
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -85,7 +95,35 @@ public class RepairInvoiceController {
             System.out.println(e.getMessage());
         }
         
-        
+        return repairInvoiceRepository.save(newInvoice);
+    }
+
+    @PostMapping("/invoice")
+    public RepairInvoice addRepairInvoice(@RequestBody Map<String, String> body) {
+        RepairInvoice newInvoice = new RepairInvoice();
+        Optional<Brand> brand = brandRepository.findById(Long.valueOf(body.get("brand").toString()));
+        Optional<ComputerType> computerType = computerTypeRepository.findById(Long.valueOf(body.get("computerType").toString()));
+        Customer userCustomer = customerRepository.findByUsername(body.get("customer").toString());
+        Optional<Customer> customer = customerRepository.findById(userCustomer.getCustomerId());
+
+        newInvoice.setEmail(body.get("email").toString());
+        newInvoice.setBrand(brand.get());
+        newInvoice.setComputerType(computerType.get());
+        newInvoice.setDescribe(body.get("describe").toString());
+        newInvoice.setCustomer(customer.get());
+        newInvoice.setPhoneNumber(body.get("phoneNumber").toString());
+        newInvoice.setCurDate(new Date());
+
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date parsedDate = dateFormat.parse((String) body.get("sentDate"));
+            Timestamp date = new java.sql.Timestamp(parsedDate.getTime());
+            newInvoice.setSentDate(date);
+        } catch (ParseException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
         return repairInvoiceRepository.save(newInvoice);
     }

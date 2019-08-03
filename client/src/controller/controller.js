@@ -13,9 +13,6 @@ export default {
         transformResponse: (response) => {
             return JSON.parse(response)
         }
-        // [function (data) {
-        //     return data? JSON.parse(data).data : data
-        // }]
     }),
 
     getAllType: () => instance.get('computer/type', {
@@ -42,6 +39,12 @@ export default {
         describe: data.describe,
         brand: data.brand,
         computerType: data.type,
-        sentDate: data.date
+        sentDate: data.date,
+        customer: data.customer
+    }),
+
+    signIn: (data) => instance.post('login', {
+        username: data.username,
+        password: data.password
     })
 }
