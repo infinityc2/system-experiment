@@ -13,7 +13,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item link to="/login">
+        <v-list-item link @click="logOut">
           <v-list-item-action>
             <v-icon>clear</v-icon>
           </v-list-item-action>
@@ -50,6 +50,7 @@ export default {
   methods: {
     logOut: function () {
       this.$route.params.username = null
+      this.$router.push('/login')
     }
   }
 };

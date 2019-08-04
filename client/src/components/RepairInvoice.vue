@@ -60,6 +60,14 @@
       <v-btn color="primary" @click.prevent="addInvoice">แจ้งซ่อม</v-btn>
       <v-btn text>กลับ</v-btn>
     </v-card-actions>
+    <v-snackbar v-model="snackbarSuccess">
+      <h6 class="subtitle-1">เพิ่มรายการแจ้งซ่อมสำเร็จ</h6>
+      <v-btn color="primary" text @click="snackbarSuccess = false">ปิด</v-btn> 
+    </v-snackbar>
+    <v-snackbar v-model="snackbarError">
+      <h6 class="subtitle-2">ไม่สามารถเพิ่มรายการแจ้งซ่อมได้</h6>
+      <v-btn color="primary" text @click="snackbarError = false">ปิด</v-btn> 
+    </v-snackbar>
   </v-card>
 </template>
 
@@ -86,6 +94,10 @@ export default {
         describe: null,
         customer: this.$route.params.username
       },
+
+      // switching
+      snackbarSuccess: false,
+      snackbarError: false,
 
       date: new Date().toISOString().substr(0, 10),
       menu: false,
@@ -159,10 +171,14 @@ export default {
       this.$log.debug(this.invoice)
       Controller.addInvoice(this.invoice, this.invoice.tools)
       .then((response) => {
+        this.snackbarSuccess = true
+        this.snackbarError = false
         this.$log.debug(response)
         this.$log.debug("Add Complete: ", this.invoice)
       })
       .catch(error => {
+        this.snackbarSuccess = false
+        this.snackbarError = true
         this.$log.debug(error)
       })
     }
