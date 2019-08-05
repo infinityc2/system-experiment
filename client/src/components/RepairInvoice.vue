@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" max-width="500">
+  <v-card class="mx-auto elevation-3" max-width="500">
     <v-card-title>แจ้งซ่อมคอมพิวเตอร์</v-card-title>
     <v-card-text>
       <v-layout column @keyup.enter="addInvoice">
@@ -91,7 +91,7 @@ export default {
         tools: [],
         email: null,
         phone: null,
-        describe: null,
+        describe: '',
         customer: this.$route.params.username
       },
 
@@ -169,17 +169,17 @@ export default {
   methods: {
     addInvoice: function () {
       this.$log.debug(this.invoice)
-      Controller.addInvoice(this.invoice, this.invoice.tools)
+      Controller.addInvoice(this.invoice)
       .then((response) => {
         this.snackbarSuccess = true
-        this.snackbarError = false
         this.$log.debug(response)
         this.$log.debug("Add Complete: ", this.invoice)
+        // this.invoice = {}
       })
       .catch(error => {
-        this.snackbarSuccess = false
         this.snackbarError = true
-        this.$log.debug(error)
+        this.$log.debug(error.response.data.message)
+        // this.invoice = {}
       })
     }
   }

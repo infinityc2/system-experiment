@@ -33,7 +33,7 @@ export default {
         }
     }),
 
-    addInvoice: (data, list) => instance.post('invoices/invoice/' + list, {
+    addInvoice: (data) => instance.post('invoices/invoice/' + data.tools, {
         phoneNumber: data.phone,
         email: data.email,
         describe: data.describe,
