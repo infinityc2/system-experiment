@@ -3,6 +3,7 @@ package com.example.sa.entity;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Set;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -62,7 +63,7 @@ public class RepairInvoice {
         name = "tool_invoice",
         joinColumns = @JoinColumn(name = "invoice_id", referencedColumnName = "invoiceId"),
         inverseJoinColumns = @JoinColumn(name = "tool_id", referencedColumnName = "toolId"))
-    private Set<Tool> tool;
+    private Collection<Tool> tool;
 
     @ManyToOne
     private Customer customer;
