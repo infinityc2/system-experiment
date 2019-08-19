@@ -1,6 +1,7 @@
 package com.example.sa.entity;
 
 import java.util.Set;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,7 +39,7 @@ public class Tool{
     @ManyToMany(mappedBy = "tool")
     @JsonBackReference
     @Column(nullable = true)
-    private Set<RepairInvoice> repairInvoices;
+    private Collection<RepairInvoice> repairInvoices;
 
     public Tool(String name, ToolType toolType, float price) {
         this.name = name;
